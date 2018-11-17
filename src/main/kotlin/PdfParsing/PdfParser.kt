@@ -29,7 +29,7 @@ class PdfParser {
             val pdfStripper = PDFTextStripper()
             val pdfRenderer = PDFRenderer(doc)
             val ret = mutableListOf<String>()
-            (0 until doc.numberOfPages-1).forEach { pageNumber ->
+            (0 until doc.numberOfPages).forEach { pageNumber ->
                 pdfStripper.startPage = pageNumber
                 pdfStripper.endPage = pageNumber
                 var text = pdfStripper.getText(doc)
@@ -51,16 +51,15 @@ class PdfParser {
         var pixImage: lept.PIX? = null
         var result: BytePointer? = null
         try {
-            if (api.Init("src/main/resources/tessdata", "jpn") != 0) {
+            if (api.Init("src/main/resources/tessdata", "jpn_vert") != 0) {
                 throw InitializationException("Could not initialize tesseract OCR library.")
             }
+            api.SetPageSegMode(PSM_SINGLE_BLOCK_VERT_TEXT)
             val baos = ByteArrayOutputStream()
             ImageIO.write(image, "bmp", baos)
             val bytes = baos.toByteArray()
             baos.close()
-            val buffer = ByteBuffer.wrap(bytes)
-            val pointer = BytePointer(buffer)
-            pixImage = pixReadMem(pointer, bytes.size.toLong())
+            pixImage = pixReadMem(BytePointer(ByteBuffer.wrap(bytes)), bytes.size.toLong())
             api.SetImage(pixImage)
             result = api.GetUTF8Text()
             return result?.string ?: ""
