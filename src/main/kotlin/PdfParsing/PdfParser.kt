@@ -33,7 +33,7 @@ class PdfParser {
                 pdfStripper.startPage = pageNumber
                 pdfStripper.endPage = pageNumber
                 var text = pdfStripper.getText(doc)
-                if (text.isEmpty()) {
+                if (text.trim().isEmpty()) {
                     text = getTextFromImage(pdfRenderer.renderImage(pageNumber))
                 }
                 ret.add(text)
@@ -58,7 +58,9 @@ class PdfParser {
             ImageIO.write(image, "bmp", baos)
             val bytes = baos.toByteArray()
             baos.close()
-            pixImage = pixRead(BytePointer(ByteBuffer.wrap(bytes)))
+            val buffer = ByteBuffer.wrap(bytes)
+            val pointer = BytePointer(buffer)
+            pixImage = pixReadMem(pointer, bytes.size.toLong())
             api.SetImage(pixImage)
             result = api.GetUTF8Text()
             return result?.string ?: ""
