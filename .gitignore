@@ -1,0 +1,12 @@
+# Java
+*.class
+*.jar
+build/
+out/
+
+# Gradle
+.gradle/
+!gradle-wrapper.jar
+
+# IDE
+.idea/
