@@ -6,25 +6,22 @@ import org.apache.pdfbox.text.PDFTextStripper
 import org.bytedeco.javacpp.BytePointer
 import org.bytedeco.javacpp.lept
 import org.bytedeco.javacpp.lept.pixDestroy
-import org.bytedeco.javacpp.lept.pixRead
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.ByteBuffer
 import javax.imageio.ImageIO
-import org.bytedeco.javacpp.*
 import org.bytedeco.javacpp.lept.*
 import org.bytedeco.javacpp.tesseract.*
 
 class PdfParser {
 
-    fun translateTextFromPdf(pdfFile: File): List<String> {
-        val textPages = getTextFromPdf(pdfFile)
-        val formattedText = textPages.map { singleLine(it) }
-        return formattedText
+    fun parseTextFromPdf(pdfFile: File): List<String> {
+        val textPages = extractTextFromPdf(pdfFile)
+        return textPages.map { singleLine(it) }
     }
 
-    private fun getTextFromPdf(pdfFile: File): List<String> {
+    private fun extractTextFromPdf(pdfFile: File): List<String> {
         PDDocument.load(pdfFile).use { doc ->
             val pdfStripper = PDFTextStripper()
             val pdfRenderer = PDFRenderer(doc)

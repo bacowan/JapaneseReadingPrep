@@ -39,6 +39,9 @@ dependencies {
     compile(group="org.bytedeco.javacpp-presets", name="tesseract", version="4.0.0-rc2-1.4.3")
     compile(group="org.bytedeco.javacpp-presets", name="tesseract", version="4.0.0-rc2-1.4.3", classifier=opencvBinaryClassifier)
     compile(group="org.bytedeco.javacpp-presets", name="leptonica", version="1.72-1.0", classifier=opencvBinaryClassifier)
+    compile(group="com.atilika.kuromoji", name="kuromoji-ipadic", version="0.9.0")
+    compile(group="com.squareup.retrofit2", name="retrofit", version="2.4.0")
+    compile(group="com.squareup.retrofit2", name="converter-gson", version="2.4.0")
     testCompile("junit:junit:4.12")
 }
 
