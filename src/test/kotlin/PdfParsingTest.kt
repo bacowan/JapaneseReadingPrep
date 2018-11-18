@@ -1,6 +1,4 @@
-import DictionarySearching.JishoSearcher
 import PdfParsing.PdfParser
-import com.atilika.kuromoji.ipadic.Tokenizer
 import org.junit.Assert
 import org.junit.Test
 import java.io.File

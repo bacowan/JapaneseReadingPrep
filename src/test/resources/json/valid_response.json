@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "status": 200
+  },
+  "data": [
+    {
+      "is_common": true,
+      "japanese": [
+        {
+          "word": "猫",
+          "reading": "ねこ"
+        },
+        {
+          "reading": "ネコ"
+        }
+      ],
+      "senses": [
+        {
+          "english_definitions": [
+            "cat"
+          ],
+          "parts_of_speech": [
+            "Noun"
+          ]
+        }
+      ]
+    }
+  ]
+}
