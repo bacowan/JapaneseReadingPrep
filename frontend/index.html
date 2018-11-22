@@ -33,15 +33,26 @@
     
 <div class="carousel slide vertical-center">
     <div class="carousel-inner">
-        <div class="carousel-item active">
+        <div class="carousel-item active container">
             <h1 class="text-center">Put whatever you want to read here!</h1>
-            <form class="form-inline container-fluid">
-                    <input type="file" class="form-control-file border col-sm-8 mr-2 mb-2">
-                    <select class="form-control col-4 col-sm mb-2">
-                        <option>File</option>
-                        <option>Website</option>
-                        <option>Text</option>
-                    </select>
+            <p class="text-center mb-5">Browse for a .pdf or .txt file, type in a website address, or paste some text</p>
+            <form>
+                <div class="input-group">
+                    <div class="input-group-prepend mr-2">
+                        <select class="custom-select">
+                            <option>File</option>
+                            <option>Website</option>
+                            <option>Text</option>
+                        </select>
+                    </div>
+                    <div class="custom-file mb-3">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary btn-lg mx-auto">Create reading guide</button>
+                </div>
             </form>
         </div>
         <div class="carousel-item">
