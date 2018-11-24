@@ -30,7 +30,7 @@ class Navbar extends React.Component {
 class ReviewCard extends React.Component {
     render() {
         return (
-            <div>
+            <div className="card">
                 <div className="card-header">
                     <h1>{this.props.kanji}</h1>
                 </div>
