@@ -27,24 +27,54 @@ class Navbar extends React.Component {
     }
 }
 
-class ParserSectionTab extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = { active: props.active }
-    }
-
+class ReviewCard extends React.Component {
     render() {
-        let classes = ["tab-pane", "container"]
-        if (this.state.active) {
-            classes.push("active")
-        }
-        else {
-            classes.push("fade")
-        }
         return (
-            <div className={classes.join(' ')}>
-                {this.props.children}
+            <div>
+                <div className="card-header">
+                    <h1>{this.props.kanji}</h1>
+                </div>
+                <div className="card-body">
+                    <p>{this.props.definitions}</p>
+                </div>
+                <div className="card-footer">
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        )
+    }
+}
+
+class ResultsSection extends React.Component {
+    render() {
+        const mockData = [
+            <ReviewCard kanji="猫" definitions="Cat"/>,
+            <ReviewCard kanji="犬" definitions="Dog"/>,
+            <ReviewCard kanji="好き" definitions="Like"/>,
+            <ReviewCard kanji="頭" definitions="Head"/>,
+            <ReviewCard kanji="卵" definitions="Egg"/>,
+            <ReviewCard kanji="ピカチュウ" definitions="Pikachu"/>,
+            <ReviewCard kanji="水" definitions="Water"/>,
+            <ReviewCard kanji="上がる" definitions="To go up"/>,
+            <ReviewCard kanji="海" definitions="Ocean"/>,
+            <ReviewCard kanji="何" definitions="What"/>,
+            <ReviewCard kanji="頭がいい" definitions="Smart"/>,
+            <ReviewCard kanji="うんこ" definitions="Poop"/>,
+            <ReviewCard kanji="音楽" definitions="Music"/>,
+            <ReviewCard kanji="青い" definitions="Blue"/>
+        ]
+        const dataAsColumns = mockData.map((card) =>
+            <div class="col-sm-6 col-md-3 col-lg-2">
+                {card}
+            </div>
+        )
+
+        return (
+            <div>
+                <h1 className="text-center mb-5">Results</h1>
+                <div class="row">
+                    {dataAsColumns}
+                </div>
             </div>
         )
     }
@@ -135,7 +165,7 @@ class ParserSection extends React.Component {
                         </div>
                     </div>
                     <div className="tab-pane container fade" id="thirdTab">
-                        three
+                        <ResultsSection/>
                     </div>
                 </div>
             </div>

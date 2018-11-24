@@ -5,10 +5,10 @@ html, body {
 }
 
 .vertical-center {
-  min-height: 70%;
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
+    min-height: 70%;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
     margin: auto;
     width: 80%;
 }
