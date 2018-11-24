@@ -123,25 +123,13 @@ class LoadingPage extends React.Component {
     }
 
     componentDidMount() {
-        //temporary: this shouldn't be on a timer, it should update when the server tells it to
-        this.timerID = setInterval(
-            () => this.tick(),
-            100
-        );
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        this.setState(state => ({
-            progress: state.progress + 10
-        }));
-        if (this.state.progress >= 100) {
-            clearInterval(this.timerID);
-            this.props.onLoadingDone()
-        }
+        const data = new FormData()
+        data.append('file', this.props.file)
+        fetch('./stuff', {
+            method: 'post',
+            enctype: 'multipart/form-data',
+            body: data
+        })
     }
 
     render() {
@@ -157,6 +145,16 @@ class LoadingPage extends React.Component {
 }
 
 class InputPage extends React.Component {
+    constructor(props) {
+        super(props)
+        this.fileInput = React.createRef();
+        this.handleParseSubmit = this.handleParseSubmit.bind(this)
+    }
+
+    handleParseSubmit() {
+        this.props.handleParseSubmit(this.fileInput.current.files[0])
+    }
+
     render() {
         return (
             <div className="container">
@@ -172,12 +170,12 @@ class InputPage extends React.Component {
                             </select>
                         </div>
                         <div className="custom-file col-sm-9 col-md-10 mb-3">
-                            <input type="file" className="custom-file-input" id="customFile"></input>
+                            <input type="file" className="custom-file-input" id="customFile" ref={this.fileInput}></input>
                             <label className="custom-file-label" htmlFor="customFile">Choose file</label>
                         </div>
                     </div>
                     <div className="row">
-                        <button type="button" className="btn btn-primary btn-lg mx-auto" onClick={this.props.handleParseSubmit}>Create reading guide</button>
+                        <button type="button" className="btn btn-primary btn-lg mx-auto" onClick={this.handleParseSubmit}>Create reading guide</button>
                     </div>
                 </form>
             </div>
@@ -196,10 +194,10 @@ class ParserSection extends React.Component {
         }
     }
 
-    handleParseSubmit() {
+    handleParseSubmit(file) {
         this.setState(
             {
-                page: <LoadingPage onLoadingDone={this.handleLoadingDone}/>
+                page: <LoadingPage onLoadingDone={this.handleLoadingDone} file={file}/>
             }
         )
     }
