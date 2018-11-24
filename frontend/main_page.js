@@ -57,25 +57,51 @@ class ParserSection extends React.Component {
         this.firstTabRef = React.createRef();
         this.secondTabRef = React.createRef();
         this.thirdTabRef = React.createRef();
+
+        this.state = {progress: 0}
+
         this.handleParseSubmit = this.handleParseSubmit.bind(this)
     }
 
     handleParseSubmit() {
         this.secondTabRef.current.click()
+        //temporary: this shouldn't be on a timer, it should update when the server tells it to
+        this.timerID = setInterval(
+            () => this.tick(),
+            100
+          );
     }
+
+    //
+    //temporary: this shouldn't be on a timer, it should update when the server tells it to
+    tick() {
+        this.setState(state => ({
+          progress: state.progress + 10
+        }));
+        if (this.state.progress >= 100) {
+            clearInterval(this.timerID);
+            this.thirdTabRef.current.click()
+        }
+      }
+  
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+    //
+    //
 
     render() {
         return (
             <div>
                 <ul className="nav nav-tabs invisible">
-                    <li className="nav-item" ref={this.firstTabRef}>
-                        <a className="nav-link active" data-toggle="tab" href="#firstTab"></a>
+                    <li className="nav-item">
+                        <a className="nav-link active" data-toggle="tab" href="#firstTab" ref={this.firstTabRef}></a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" data-toggle="tab" href="#secondTab" ref={this.secondTabRef}></a>
                     </li>
-                    <li className="nav-item" ref={this.thirdTabRef}>
-                        <a className="nav-link" data-toggle="tab" href="#thirdTab"></a>
+                    <li className="nav-item">
+                        <a className="nav-link" data-toggle="tab" href="#thirdTab" ref={this.thirdTabRef}></a>
                     </li>
                 </ul>
 
@@ -105,7 +131,7 @@ class ParserSection extends React.Component {
                     <div className="tab-pane container fade" id="secondTab">
                         <h1 className="text-center mb-3">Parsing...</h1>
                         <div className="progress" style={{height: "30px"}}>
-                            <div className="progress-bar progress-bar-animated progress-bar-striped" style={{width: "40%", height: "30px"}}></div>
+                            <div className="progress-bar progress-bar-animated progress-bar-striped" style={{width: this.state.progress.toString() + "%", height: "30px"}}></div>
                         </div>
                     </div>
                     <div className="tab-pane container fade" id="thirdTab">
