@@ -32,13 +32,13 @@ class ReviewCard extends React.Component {
         return (
             <div className="card">
                 <div className="card-header">
-                    <h1>{this.props.kanji}</h1>
+                    <h1 className="text-center">{this.props.kanji}</h1>
                 </div>
                 <div className="card-body">
-                    <p>{this.props.definitions}</p>
+                    <p className="card-text">{this.props.definitions}</p>
                 </div>
                 <div className="card-footer">
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" className="btn btn-primary">Save</button>
                 </div>
             </div>
         )
@@ -48,32 +48,27 @@ class ReviewCard extends React.Component {
 class ResultsSection extends React.Component {
     render() {
         const mockData = [
-            <ReviewCard kanji="猫" definitions="Cat"/>,
-            <ReviewCard kanji="犬" definitions="Dog"/>,
-            <ReviewCard kanji="好き" definitions="Like"/>,
-            <ReviewCard kanji="頭" definitions="Head"/>,
-            <ReviewCard kanji="卵" definitions="Egg"/>,
-            <ReviewCard kanji="ピカチュウ" definitions="Pikachu"/>,
-            <ReviewCard kanji="水" definitions="Water"/>,
-            <ReviewCard kanji="上がる" definitions="To go up"/>,
-            <ReviewCard kanji="海" definitions="Ocean"/>,
-            <ReviewCard kanji="何" definitions="What"/>,
-            <ReviewCard kanji="頭がいい" definitions="Smart"/>,
-            <ReviewCard kanji="うんこ" definitions="Poop"/>,
-            <ReviewCard kanji="音楽" definitions="Music"/>,
-            <ReviewCard kanji="青い" definitions="Blue"/>
+            <ReviewCard kanji="猫" definitions="Cat" key="猫"/>,
+            <ReviewCard kanji="犬" definitions="Dog" key="犬"/>,
+            <ReviewCard kanji="好き" definitions="Like" key="好き"/>,
+            <ReviewCard kanji="頭" definitions="Head" key="頭"/>,
+            <ReviewCard kanji="卵" definitions="Egg" key="卵"/>,
+            <ReviewCard kanji="ピカチュウ" definitions="Pikachu" key="ピカチュウ"/>,
+            <ReviewCard kanji="水" definitions="Water" key="水"/>,
+            <ReviewCard kanji="上がる" definitions="To go up" key="上がる"/>,
+            <ReviewCard kanji="海" definitions="Ocean" key="海"/>,
+            <ReviewCard kanji="何" definitions="What" key="何"/>,
+            <ReviewCard kanji="頭がいい" definitions="Smart" key="頭がいい"/>,
+            <ReviewCard kanji="うんこ" definitions="Poop" key="うんこ"/>,
+            <ReviewCard kanji="音楽" definitions="Music" key="音楽"/>,
+            <ReviewCard kanji="青い" definitions="Blue" key="青い"/>
         ]
-        const dataAsColumns = mockData.map((card) =>
-            <div class="col-sm-6 col-md-3 col-lg-2">
-                {card}
-            </div>
-        )
 
         return (
             <div>
                 <h1 className="text-center mb-5">Results</h1>
-                <div class="row">
-                    {dataAsColumns}
+                <div className="card-columns">
+                    {mockData}
                 </div>
             </div>
         )
@@ -159,7 +154,7 @@ class ParserSection extends React.Component {
                         </form>
                     </div>
                     <div className="tab-pane container fade" id="secondTab">
-                        <h1 className="text-center mb-3">Parsing...</h1>
+                        <h1 className="text-center mb-3 display-1">Parsing...</h1>
                         <div className="progress" style={{height: "30px"}}>
                             <div className="progress-bar progress-bar-animated progress-bar-striped" style={{width: this.state.progress.toString() + "%", height: "30px"}}></div>
                         </div>
