@@ -12,3 +12,7 @@ html, body {
     margin: auto;
     width: 80%;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

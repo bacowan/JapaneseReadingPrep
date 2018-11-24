@@ -27,19 +27,50 @@ class Navbar extends React.Component {
     }
 }
 
+class ReviewCardModal extends React.Component {
+    render() {
+        return (
+            <div className="modal fade" id={this.props.kanji}>
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h3 className="modal-title">{this.props.kanji}</h3>
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div className="modal-body">
+                            {this.props.definitions}
+                        </div>
+                        <div className="modal-footer d-flex">
+                            <button type="button" className="btn btn-primary mr-1 ml-auto">
+                                I know this!
+                            </button>
+                            <button type="button" className="btn btn-secondary">
+                                Remind me later
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 class ReviewCard extends React.Component {
     render() {
         return (
             <div className="card">
-                <div className="card-header">
+                <div className="card-body cursor-pointer" data-toggle="modal" data-target={"#" + this.props.kanji}>
                     <h1 className="text-center">{this.props.kanji}</h1>
                 </div>
-                <div className="card-body">
-                    <p className="card-text">{this.props.definitions}</p>
+                <div className="card-footer d-flex">
+                    <button type="button" className="btn btn-primary mr-1 ml-auto">
+                        <i className="material-icons align-middle" align="center">check_circle_outline</i>
+                    </button>
+                    <button type="button" className="btn btn-secondary">
+                        <i className="material-icons align-middle" align="center">access_time</i>
+                    </button>
                 </div>
-                <div className="card-footer">
-                    <button type="button" className="btn btn-primary">Save</button>
-                </div>
+                <ReviewCardModal kanji={this.props.kanji} definitions={this.props.definitions}/>
             </div>
         )
     }
