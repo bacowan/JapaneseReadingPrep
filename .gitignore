@@ -10,3 +10,6 @@
 
 # IDE
 */.idea/
+
+# Javascript
+*/package-lock.json
