@@ -103,7 +103,10 @@ class ParserSection extends React.Component {
                         </form>
                     </div>
                     <div className="tab-pane container fade" id="secondTab">
-                        <h1 className="text-center">Parsing...</h1>
+                        <h1 className="text-center mb-3">Parsing...</h1>
+                        <div className="progress" style={{height: "30px"}}>
+                            <div className="progress-bar progress-bar-animated progress-bar-striped" style={{width: "40%", height: "30px"}}></div>
+                        </div>
                     </div>
                     <div className="tab-pane container fade" id="thirdTab">
                         three
