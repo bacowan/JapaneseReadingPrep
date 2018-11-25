@@ -2,10 +2,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    war
     kotlin("jvm") version "1.2.51"
 }
-
-version = "1.0-SNAPSHOT"
 
 var opencvBinaryClassifier: String = ""
 ext {
@@ -26,14 +25,15 @@ ext {
         arch = "x86_64"
     }
     opencvBinaryClassifier = "$os-$arch"
-
 }
 
 repositories {
     mavenCentral()
+
 }
 
 dependencies {
+    // parsing
     implementation(kotlin("stdlib-jdk8"))
     implementation(group="org.apache.pdfbox", name="pdfbox", version="2.0.1")
     implementation(group="org.bytedeco.javacpp-presets", name="tesseract", version="4.0.0-rc2-1.4.3")
@@ -42,9 +42,15 @@ dependencies {
     implementation(group="com.atilika.kuromoji", name="kuromoji-ipadic", version="0.9.0")
     implementation(group="com.squareup.retrofit2", name="retrofit", version="2.4.0")
     implementation(group="com.squareup.retrofit2", name="converter-gson", version="2.4.0")
+
+    // server
+    providedCompile(group="javax.servlet", name="javax.servlet-api", version="4.0.1")
+
+    // testing
     testImplementation(group="org.mockito", name="mockito-core", version="2.23.0")
     testImplementation(group="com.squareup.okhttp3", name="mockwebserver", version="3.12.0")
     testImplementation("junit:junit:4.12")
+
 }
 
 tasks.withType<KotlinCompile> {

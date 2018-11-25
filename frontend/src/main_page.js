@@ -1,7 +1,5 @@
 'use strict';
 
-const e = React.createElement;
-
 class Navbar extends React.Component {
     render() {
         return (
@@ -125,7 +123,7 @@ class LoadingPage extends React.Component {
     componentDidMount() {
         const data = new FormData()
         data.append('file', this.props.file)
-        fetch('./stuff', {
+        fetch('./parse', {
             method: 'post',
             enctype: 'multipart/form-data',
             body: data
