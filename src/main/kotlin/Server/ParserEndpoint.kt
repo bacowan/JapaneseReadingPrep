@@ -12,7 +12,7 @@ class ParserEndpoint: AbstractWebSocketHandler() {
     @Throws(IOException::class)
     override fun handleTextMessage(session: WebSocketSession?, message: TextMessage?) {
         println("New Text Message Received")
-        session!!.sendMessage(message)
+        session!!.sendMessage(TextMessage("60"))
     }
 
     @Throws(IOException::class)

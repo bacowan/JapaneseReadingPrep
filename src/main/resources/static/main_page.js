@@ -121,15 +121,22 @@ class LoadingPage extends React.Component {
     }
 
     componentDidMount() {
-        const data = new FormData()
-        data.append('file', this.props.file)
-        fetch('./parse', {
-            method: 'post',
-            enctype: 'multipart/form-data',
-            body: data})
-            .then(res => this.setState({
-                progress: res
-            }));
+        var self = this
+        const socket = new WebSocket("ws://localhost:8080/parse")
+
+        socket.binaryType = "arraybuffer"
+        socket.onmessage = function (event) {
+            if (typeof event.data === "string") {
+                self.setState({progress: event.data})
+            }
+        }
+
+        socket.onopen = function(event) {
+            const data = new FormData()
+            data.append('file', self.props.file)
+            socket.send(data)
+        }
+
     }
 
     render() {
