@@ -132,9 +132,11 @@ class LoadingPage extends React.Component {
         }
 
         socket.onopen = function(event) {
-            const data = new FormData()
-            data.append('file', self.props.file)
-            socket.send(data)
+            const reader = new FileReader()
+            reader.onload = function() {
+                socket.send(this.result)
+            }
+            reader.readAsArrayBuffer(self.props.file)
         }
 
     }
