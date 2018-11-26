@@ -126,8 +126,10 @@ class LoadingPage extends React.Component {
         fetch('./parse', {
             method: 'post',
             enctype: 'multipart/form-data',
-            body: data
-        })
+            body: data})
+            .then(res => this.setState({
+                progress: res
+            }));
     }
 
     render() {

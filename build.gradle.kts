@@ -2,9 +2,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    war
     kotlin("jvm") version "1.2.51"
+    id("org.springframework.boot") version "2.1.0.RELEASE"
 }
+apply(plugin = "io.spring.dependency-management")
 
 var opencvBinaryClassifier: String = ""
 ext {
@@ -29,7 +30,6 @@ ext {
 
 repositories {
     mavenCentral()
-
 }
 
 dependencies {
@@ -44,7 +44,9 @@ dependencies {
     implementation(group="com.squareup.retrofit2", name="converter-gson", version="2.4.0")
 
     // server
-    providedCompile(group="javax.servlet", name="javax.servlet-api", version="4.0.1")
+    implementation(group="org.springframework", name="spring-websocket", version="5.1.2.RELEASE")
+    implementation(group="org.springframework.boot", name="spring-boot", version="2.1.0.RELEASE")
+    implementation(group="org.springframework.boot", name="spring-boot-starter-web", version="2.1.0.RELEASE")
 
     // testing
     testImplementation(group="org.mockito", name="mockito-core", version="2.23.0")
