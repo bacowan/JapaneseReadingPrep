@@ -38,7 +38,7 @@ dependencies {
     implementation(group="org.apache.pdfbox", name="pdfbox", version="2.0.1")
     implementation(group="org.bytedeco.javacpp-presets", name="tesseract", version="4.0.0-rc2-1.4.3")
     implementation(group="org.bytedeco.javacpp-presets", name="tesseract", version="4.0.0-rc2-1.4.3", classifier=opencvBinaryClassifier)
-    implementation(group="org.bytedeco.javacpp-presets", name="leptonica", version="1.72-1.0", classifier=opencvBinaryClassifier)
+    implementation(group="org.bytedeco.javacpp-presets", name="leptonica", version="1.76.0-1.4.3", classifier=opencvBinaryClassifier)
     implementation(group="com.atilika.kuromoji", name="kuromoji-ipadic", version="0.9.0")
     implementation(group="com.squareup.retrofit2", name="retrofit", version="2.4.0")
     implementation(group="com.squareup.retrofit2", name="converter-gson", version="2.4.0")
