@@ -2,32 +2,20 @@ package DictionarySearching
 
 import DictionarySearching.RestModels.SearchResultData
 import DictionarySearching.RestServices.JishoService
-import com.atilika.kuromoji.ipadic.Token
+import Server.Word
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class JishoSearcher {
 
-    val japanesePosToEnglish = hashMapOf(
-            "名詞" to listOf("Noun, Place"),
-            "動詞" to listOf("Verb"),
-            "形容詞" to listOf("Adjective"),
-            "副詞" to listOf("Adverb"),
-            "助詞" to listOf("Particle"),
-            "接続詞" to listOf("Conjugation"),
-            "助動詞" to listOf("Pronoun"),
-            "連体詞" to listOf("Pre-noun adjectival", "I-adjective", "No-adjective"),
-            "感動詞" to listOf("Interjection")
-    )
-
-    fun searchMostLikely(token: Token): DictionaryEntry {
-        val response = getSearchResponse(token.baseForm)
-        return getBestMatchFromResponse(response, token)
+    fun searchMostLikely(word: Word): DictionaryEntry {
+        val response = getSearchResponse(word.base)
+        return getBestMatchFromResponse(response, word)
     }
 
-    fun searchAll(token: Token): List<DictionaryEntry> {
-        val response = getSearchResponse(token.baseForm)
+    fun searchAll(word: Word): List<DictionaryEntry> {
+        val response = getSearchResponse(word.base)
         return response.map { toDictionaryEntry(it) }
     }
 
@@ -43,10 +31,10 @@ class JishoSearcher {
         return callSync.execute().body()?.data ?: listOf()
     }
 
-    private fun getBestMatchFromResponse(results: List<SearchResultData>, searchedToken: Token): DictionaryEntry {
+    private fun getBestMatchFromResponse(results: List<SearchResultData>, searchedWord: Word): DictionaryEntry {
         val asDictionaryEntries = results.map { toDictionaryEntry(it) }
-        val filteredByJapanese = filterByJapanese(asDictionaryEntries, searchedToken)
-        val filteredByPartOfSpeech = filterByPartOfSpeech(filteredByJapanese, searchedToken)
+        val filteredByJapanese = filterByJapanese(asDictionaryEntries, searchedWord)
+        val filteredByPartOfSpeech = filterByPartOfSpeech(filteredByJapanese, searchedWord)
         val filteredByCommon = filterByCommon(filteredByPartOfSpeech)
         return filteredByCommon.first()
     }
@@ -63,13 +51,13 @@ class JishoSearcher {
         )
     }
 
-    private fun filterByJapanese(itemsToFilter: List<DictionaryEntry>, token: Token): List<DictionaryEntry> {
-        val filteredOnBaseForm = itemsToFilter.filter { it.word == token.baseForm }
+    private fun filterByJapanese(itemsToFilter: List<DictionaryEntry>, word: Word): List<DictionaryEntry> {
+        val filteredOnBaseForm = itemsToFilter.filter { it.word == word.base }
         return if (filteredOnBaseForm.isNotEmpty()) {
             filteredOnBaseForm
         }
         else {
-            val filteredOnReading = itemsToFilter.filter { it.reading == token.reading }
+            val filteredOnReading = itemsToFilter.filter { it.reading == word.reading }
             return if (filteredOnBaseForm.isNotEmpty()) {
                 filteredOnReading
             }
@@ -79,14 +67,14 @@ class JishoSearcher {
         }
     }
 
-    private fun filterByPartOfSpeech(itemsToFilter: List<DictionaryEntry>, token: Token): List<DictionaryEntry> {
+    private fun filterByPartOfSpeech(itemsToFilter: List<DictionaryEntry>, word: Word): List<DictionaryEntry> {
         val filteredByPartOfSpeech = itemsToFilter.filter {
-            containsPartOfSpeech(it.english.flatMap { e -> e.partsOfSpeech }, token)
+            containsPartOfSpeech(it.english.flatMap { e -> e.partsOfSpeech }, word)
         }
         return if (filteredByPartOfSpeech.isNotEmpty()) {
             filteredByPartOfSpeech.forEach { entry ->
                 val meaningsWithCorrectPartOfSpeech = entry.english.filter {
-                    containsPartOfSpeech(it.partsOfSpeech, token)
+                    containsPartOfSpeech(it.partsOfSpeech, word)
                 }
                 entry.english.clear()
                 entry.english.addAll(meaningsWithCorrectPartOfSpeech)
@@ -98,10 +86,9 @@ class JishoSearcher {
         }
     }
 
-    private fun containsPartOfSpeech(partsOfSpeech: List<String>, token: Token): Boolean {
-        val englishPos = japanesePosToEnglish[token.partOfSpeechLevel1]
-        return englishPos == null || partsOfSpeech.any { resultPos ->
-            englishPos.any { it.startsWith(resultPos, ignoreCase = true) }
+    private fun containsPartOfSpeech(partsOfSpeech: List<String>, word: Word): Boolean {
+        return partsOfSpeech.any { resultPos ->
+            word.partsOfSpeech.any { it.startsWith(resultPos, ignoreCase = true) }
         }
     }
 

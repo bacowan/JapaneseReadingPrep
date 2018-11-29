@@ -1,4 +1,5 @@
 import DictionarySearching.JishoSearcher
+import Server.Word
 import com.atilika.kuromoji.ipadic.Tokenizer
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -25,7 +26,11 @@ class JishoParsingTest {
         mockServer.enqueue(mockResponse)
 
         val searcher = JishoSearcher()
-        val result = searcher.searchMostLikely(Tokenizer().tokenize("猫").first())
+        val result = searcher.searchMostLikely(Word(
+                base = "猫",
+                reading = "ねこ",
+                partsOfSpeech = listOf("noun")
+        ))
 
         Assert.assertEquals(1, result.english.count())
         Assert.assertEquals("cat", result.english.first().meaning)
