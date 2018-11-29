@@ -115,47 +115,12 @@ class ResultsPage extends React.Component {
 }
 
 class LoadingPage extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {progress: 0}
-        this.handleLoadingDone = this.handleLoadingDone.bind(this)
-    }
-
-    handleLoadingDone() {
-        this.props.handleLoadingDone()
-    }
-
-    componentDidMount() {
-        var self = this
-        const socket = new WebSocket("ws://localhost:8080/parse")
-
-        socket.binaryType = "arraybuffer"
-        socket.onmessage = function (event) {
-            if (typeof event.data === "string") {
-                var asJson = JSON.parse(event.data)
-                self.setState({progress: asJson.progress})
-                if (asJson.progress == 100) {
-                    self.props.handleLoadingDone()
-                }
-            }
-        }
-
-        socket.onopen = function(event) {
-            const reader = new FileReader()
-            reader.onload = function() {
-                socket.send(this.result)
-            }
-            reader.readAsArrayBuffer(self.props.file)
-        }
-
-    }
-
     render() {
         return (
             <div className="container" id="firstTab">
                 <h1 className="text-center mb-3 display-1">Parsing...</h1>
                 <div className="progress" style={{ height: "30px" }}>
-                    <div className="progress-bar progress-bar-animated progress-bar-striped" style={{ width: this.state.progress.toString() + "%", height: "30px" }}></div>
+                    <div className="progress-bar progress-bar-animated progress-bar-striped" style={{ width: this.props.progress.toString() + "%", height: "30px" }}></div>
                 </div>
             </div>
         )
@@ -205,7 +170,6 @@ class ParserSection extends React.Component {
     constructor(props) {
         super(props)
         this.handleParseSubmit = this.handleParseSubmit.bind(this)
-        this.handleLoadingDone = this.handleLoadingDone.bind(this)
         this.state = {
             progress: 0,
             page: <InputPage handleParseSubmit={this.handleParseSubmit} />
@@ -213,19 +177,37 @@ class ParserSection extends React.Component {
     }
 
     handleParseSubmit(file) {
-        this.setState(
-            {
-                page: <LoadingPage handleLoadingDone={this.handleLoadingDone} file={file}/>
+        var self = this
+        const socket = new WebSocket("ws://localhost:8080/parse")
+
+        socket.binaryType = "arraybuffer"
+        socket.onmessage = function (event) {
+            if (typeof event.data === "string") {
+                var asJson = JSON.parse(event.data)
+                self.setLoadingPageProgress(asJson.progress)
+                if (asJson.progress == 100) {
+                    self.setState(
+                        {
+                            page: <ResultsPage/>
+                        }
+                    )
+                }
             }
-        )
+        }
+        socket.onopen = function(event) {
+            const reader = new FileReader()
+            reader.onload = function() {
+                socket.send(this.result)
+            }
+            reader.readAsArrayBuffer(file)
+        }
+        self.setLoadingPageProgress(0)
     }
 
-    handleLoadingDone() {
-        this.setState(
-            {
-                page: <ResultsPage/>
-            }
-        )
+    setLoadingPageProgress(progress) {
+        this.setState({
+            page: <LoadingPage progress={progress}/>
+        })
     }
 
     render() {

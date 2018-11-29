@@ -27,7 +27,10 @@ class ParserEndpoint: AbstractWebSocketHandler() {
             message.payload.get(bytes, 0, message.payloadLength)
             val pdfParser = PdfParser()
             val progressReporter = ProgressReporter {
-                session.sendMessage(TextMessage(toJson(ParsingResult(it.toInt()))))
+                val asInt = it.toInt()
+                if (asInt != 100) {
+                    session.sendMessage(TextMessage(toJson(ParsingResult(asInt))))
+                }
             }
             val words = pdfParser.parseTextFromPdf(bytes, progressReporter)
                     .flatMap { tokenizer.tokenize(it) }

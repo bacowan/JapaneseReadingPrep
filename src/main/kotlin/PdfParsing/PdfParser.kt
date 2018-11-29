@@ -34,13 +34,13 @@ class PdfParser {
 
     fun parseTextFromPdf(pdfFile: ByteArray, progress: ProgressReporter = ProgressReporter{}): List<String> {
         val textPages = PDDocument.load(pdfFile).use {
-            progress.setAsRatio(0, it.numberOfPages)
             extractTextFromPdf(it, progress)
         }
         return textPages.map { singleLine(it) }
     }
 
     private fun extractTextFromPdf(doc: PDDocument, progress: ProgressReporter = ProgressReporter{}): List<String> {
+        progress.setAsRatio(0, doc.numberOfPages)
         val pdfStripper = PDFTextStripper()
         val pdfRenderer = PDFRenderer(doc)
         val ret = mutableListOf<String>()
