@@ -118,6 +118,11 @@ class LoadingPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {progress: 0}
+        this.handleLoadingDone = this.handleLoadingDone.bind(this)
+    }
+
+    handleLoadingDone() {
+        this.props.handleLoadingDone()
     }
 
     componentDidMount() {
@@ -127,7 +132,11 @@ class LoadingPage extends React.Component {
         socket.binaryType = "arraybuffer"
         socket.onmessage = function (event) {
             if (typeof event.data === "string") {
-                self.setState({progress: event.data})
+                var asJson = JSON.parse(event.data)
+                self.setState({progress: asJson.progress})
+                if (asJson.progress == 100) {
+                    self.props.handleLoadingDone()
+                }
             }
         }
 
@@ -206,7 +215,7 @@ class ParserSection extends React.Component {
     handleParseSubmit(file) {
         this.setState(
             {
-                page: <LoadingPage onLoadingDone={this.handleLoadingDone} file={file}/>
+                page: <LoadingPage handleLoadingDone={this.handleLoadingDone} file={file}/>
             }
         )
     }
