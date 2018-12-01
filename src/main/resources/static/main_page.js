@@ -188,7 +188,7 @@ class ParserSection extends React.Component {
                 if (asJson.progress == 100) {
                     self.setState(
                         {
-                            page: <ResultsPage/>
+                            page: <ResultsPage results={asJson.words}/>
                         }
                     )
                 }

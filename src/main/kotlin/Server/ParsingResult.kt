@@ -1,3 +1,3 @@
 package Server
 
-data class ParsingResult(val progress: Int, val  word: List<Word>? = null)
+data class ParsingResult(val progress: Int, val  words: List<Word>? = null)
