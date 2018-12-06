@@ -75,29 +75,21 @@ class ReviewCard extends React.Component {
 }
 
 class ResultsSection extends React.Component {
-    render() {
-        const mockData = [
-            <ReviewCard kanji="猫" definitions="Cat" key="猫" />,
-            <ReviewCard kanji="犬" definitions="Dog" key="犬" />,
-            <ReviewCard kanji="好き" definitions="Like" key="好き" />,
-            <ReviewCard kanji="頭" definitions="Head" key="頭" />,
-            <ReviewCard kanji="卵" definitions="Egg" key="卵" />,
-            <ReviewCard kanji="ピカチュウ" definitions="Pikachu" key="ピカチュウ" />,
-            <ReviewCard kanji="水" definitions="Water" key="水" />,
-            <ReviewCard kanji="上がる" definitions="To go up" key="上がる" />,
-            <ReviewCard kanji="海" definitions="Ocean" key="海" />,
-            <ReviewCard kanji="何" definitions="What" key="何" />,
-            <ReviewCard kanji="頭がいい" definitions="Smart" key="頭がいい" />,
-            <ReviewCard kanji="うんこ" definitions="Poop" key="うんこ" />,
-            <ReviewCard kanji="音楽" definitions="Music" key="音楽" />,
-            <ReviewCard kanji="青い" definitions="Blue" key="青い" />
-        ]
+    constructor(props) {
+        super(props)
+        this.state = {
+            data: this.props.results.map((result) =>
+                <ReviewCard kanji={result.base} key={result.base}/>
+            )
+        }
+    }
 
+    render() {
         return (
             <div>
                 <h1 className="text-center mb-5">Results</h1>
                 <div className="card-columns">
-                    {mockData}
+                    {this.state.data}
                 </div>
             </div>
         )
@@ -108,7 +100,7 @@ class ResultsPage extends React.Component {
     render() {
         return (
             <div className="container" id="thirdTab">
-                <ResultsSection/>
+                <ResultsSection results={this.props.results}/>
             </div>
         )
     }

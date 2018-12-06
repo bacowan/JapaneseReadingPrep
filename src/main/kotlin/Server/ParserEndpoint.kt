@@ -32,18 +32,13 @@ class ParserEndpoint: AbstractWebSocketHandler() {
                     session.sendMessage(TextMessage(toJson(ParsingResult(asInt))))
                 }
             }
+            val wordFactory = WordFactory()
+            val filter = WordFilter()
             val words = pdfParser.parseTextFromPdf(bytes, progressReporter)
                     .flatMap { tokenizer.tokenize(it) }
-                    .map { Word(
-                            it.baseForm,
-                            it.pronunciation,
-                            listOf(
-                                    it.partOfSpeechLevel1,
-                                    it.partOfSpeechLevel2,
-                                    it.partOfSpeechLevel3,
-                                    it.partOfSpeechLevel4
-                            )
-                    )}
+                    .map { wordFactory.createWord(it) }
+                    .distinctBy { it.base }
+                    .filter { filter.Include(it) }
             val wordsAsJson = toJson(ParsingResult(100, words))
             session.sendMessage(TextMessage(wordsAsJson))
         }

@@ -12,17 +12,7 @@ import java.io.File
 
 class PdfParser {
 
-    private val japanesePosToEnglish = hashMapOf(
-            "名詞" to listOf("Noun, Place"),
-            "動詞" to listOf("Verb"),
-            "形容詞" to listOf("Adjective"),
-            "副詞" to listOf("Adverb"),
-            "助詞" to listOf("Particle"),
-            "接続詞" to listOf("Conjugation"),
-            "助動詞" to listOf("Pronoun"),
-            "連体詞" to listOf("Pre-noun adjectival", "I-adjective", "No-adjective"),
-            "感動詞" to listOf("Interjection")
-    )
+
 
     fun parseTextFromPdf(pdfFile: File, progress: ProgressReporter = ProgressReporter{}): List<String> {
         return parseTextFromPdf(pdfFile.readBytes(), progress)
@@ -54,7 +44,7 @@ class PdfParser {
     }
 
     private fun singleLine(page: String): String {
-        return page.replace(System.lineSeparator().toRegex(), "")
+        return page.replace(Regex("\\s+"), "")
     }
 
     private fun getTextFromImage(image: BufferedImage): String {
